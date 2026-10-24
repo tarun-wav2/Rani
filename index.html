@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday! 💌</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts for Vintage Scrapbook Aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cream: #fbf7f0;
+      --pink-soft: #f9d8de;
+      --pink-accent: #e88599;
+      --rose-dark: #b84a62;
+    }
+    
+    body {
+      background-color: var(--bg-cream);
+      font-family: 'Playfair Display', Georgia, serif;
+      color: #4a403d;
+      overflow-x: hidden;
+    }
+    
+    .font-handwriting {
+      font-family: 'Caveat', cursive;
+    }
+    
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-sans-clean {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Envelope & Paper Texture Details */
+    .bg-paper {
+      background-color: #fffefb;
+      background-image: radial-gradient(#e5ddd0 0.75px, transparent 0.75px);
+      background-size: 16px 16px;
+    }
+
+    .vintage-shadow {
+      box-shadow: 0 10px 30px -5px rgba(80, 50, 40, 0.12), 0 4px 10px -2px rgba(80, 50, 40, 0.06);
+    }
+
+    /* Floating Keyframes */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    
+    @keyframes spinVinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .animate-float {
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+
+    .animate-spin-slow {
+      animation: spinVinyl 6s linear infinite;
+    }
+
+    /* Envelope Opening Animation */
+    .envelope-flap {
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .envelope-box:hover .envelope-flap {
+      transform: rotateX(180deg);
+    }
+  </style>
+</head>
+<body class="selection:bg-pink-200">
+
+  <!-- ================= 1. INTRO: "YOU GOT MAIL" LANDING ================= -->
+  <section id="mail-screen" class="min-h-screen flex flex-col items-center justify-center p-4 transition-all duration-700 bg-paper">
+    <div class="text-center max-w-lg mx-auto space-y-6">
+      <h1 class="text-4xl md:text-5xl font-serif text-[#785954] tracking-wide animate-pulse">
+        You got mail! 💌
+      </h1>
+      
+      <!-- Interactive Envelope -->
+      <div onclick="openBirthdaySite()" class="envelope-box relative mx-auto w-72 md:w-80 h-52 bg-[#fbe7ec] border-2 border-[#e9bfcb] rounded-lg shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+        <!-- Top Flap -->
+        <div class="envelope-flap absolute top-0 left-0 w-full h-0 border-t-[100px] border-t-[#f3c8d4] border-x-[140px] md:border-x-[160px] border-x-transparent z-20"></div>
+        
+        <!-- Letter popping out -->
+        <div class="relative z-10 text-center p-4 bg-white rounded shadow-sm border border-pink-100 transform group-hover:-translate-y-4 transition">
+          <p class="text-pink-500 font-handwriting text-3xl font-bold">A special delivery</p>
+          <span class="text-xs font-sans-clean uppercase tracking-widest text-gray-400">Tap to unlock</span>
+        </div>
+
+        <!-- Lavender / Floral Decoration SVG -->
+        <div class="absolute -right-6 -bottom-6 w-24 h-24 pointer-events-none opacity-80">
+          🌸🌿
+        </div>
+      </div>
+
+      <p class="font-handwriting text-2xl text-[#8d716c]">
+        click the envelope to open ✨
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= MAIN WEBSITE CONTENT (Revealed on Click) ================= -->
+  <main id="main-content" class="hidden opacity-0 transition-opacity duration-1000 max-w-4xl mx-auto px-4 py-8 space-y-16">
+    
+    <!-- Audio Element for Ambience -->
+    <audio id="bg-audio" loop src="Khat.mp3"></audio>
+
+    <!-- 2. HERO CELEBRATION BANNER -->
+    <header class="relative rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border-4 border-white">
+      <div class="relative h-96 md:h-[480px] w-full">
+        <!-- Photo/Video Background -->
+        <img 
+          src="9th.jpeg" 
+          alt="Happy Couple / Birthday" 
+          class="w-full h-full object-cover opacity-80 filter brightness-90"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-8 text-center text-white">
+          <!-- <p class="font-cinzel tracking-[0.25em] text-sm md:text-base uppercase text-pink-200">21st Celebration</p> -->
+          <h2 class="text-4xl md:text-6xl font-cinzel font-bold tracking-wider text-white drop-shadow-md">
+            HAPPY BIRTHDAY
+          </h2>
+          <p class="font-handwriting text-2xl md:text-3xl text-pink-200 mt-2">
+            To the one who makes everything magical ♡
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- 3. LOVE LETTER & SCRAPBOOK SECTION -->
+    <section class="bg-paper p-6 md:p-10 rounded-2xl vintage-shadow border border-[#f0e3db] relative">
+      <!-- Tape Effect Decor -->
+      <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-28 h-7 bg-pink-100/80 backdrop-blur-sm rotate-1 shadow-sm border border-pink-200/50"></div>
+
+      <div class="grid md:grid-cols-12 gap-8 items-center">
+        <!-- Left: Photo Strip -->
+        <div class="md:col-span-5 space-y-3 flex flex-col items-center bg-white p-4 rounded-xl shadow-md rotate-[-2deg]">
+          <img src="7th.jpeg" class="rounded h-28 w-full object-cover" />
+          <img src="8th.jpeg" class="rounded h-28 w-full object-cover" />
+          <img src="6th.jpeg" class="rounded h-28 w-full object-cover" />
+          <p class="font-handwriting text-lg text-gray-500">Just Hunny Being Hunny 🎀✨</p>
+        </div>
+
+        <!-- Right: Heartfelt Letter -->
+        <div class="md:col-span-7 space-y-4">
+          <div class="border-b border-pink-200 pb-2 flex justify-between items-baseline">
+            <h3 class="text-3xl font-serif text-[#6c484f]">A Letter for My Hunny 💌🎀</h3>
+            <span class="font-handwriting text-xl text-pink-400">only for you ♡</span>
+          </div>
+
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            My dearest Rani(My hunny), 💗🫶🏻,<br><br>
+            Happy Birthday to the person jo dheere-dheere meri life ka ek bahut special part ban gayi. 🥹✨ Honestly, mujhe nahi pata tha ki ek friendship itni saari memories, hasi-mazaak aur chhoti-chhoti baaton se itni special ban sakti hai. 🩷🦋
+          </p>
+
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+           Pata hai, teri sabse achhi baat kya hai? Teri woh chhoti-chhoti baatein, tera bachpana 😂, teri nautanki 🤌🏻, bina baat ke gussa hona 😤 aur phir khud hi normal ho jaana. Tujhse baat karke kabhi hasi aati hai, kabhi irritation hoti hai 😂, par tere saath har conversation ki apni ek alag vibe hoti hai. 🫶🏻🌷
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Kabhi-kabhi humari baatein kam ho jaati hain, kabhi conversations beech mein hi ruk jaati hain, but that doesn't change the fact ki tu meri life ki ek achhi aur special friend hai. 🥹💗 Har friendship mein roz ghanton baat hona zaroori nahi hota; kabhi-kabhi chhoti si baat aur ek simple si reel bhi smile karwa deti hai. 🌸✨
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Aaj tere birthday par bas itna kehna hai ki tu hamesha khush reh, apne saare dreams poore kar, life mein bahut aage badh aur apni cute si smile kabhi mat khona. 👑💖 Jab bhi life difficult lage, yaad rakhna ki tu jitna sochti hai usse kahin zyada capable hai. 🫂🌻
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Aur haan madam ji 😂, apna khayal rakha kar, time par khaya kar, zyada overthinking mat kiya kar aur apni health ko ignore bilkul mat karna. 😤💗 Ye saari daant birthday wale din bhi free mein milegi! 🤣🫶🏻
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Thank you meri life mein ek achhi friendship aur itni saari pyari memories add karne ke liye. 🥹🌷 I hope this year brings you endless happiness, beautiful surprises and countless reasons to smile. 🎂🎁✨
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Happy Birthday once again, Rani! 👑💗
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            Hamesha khush rehna, apni favourite wali smile ke saath. 🦋🌸 Aur haan, aaj ke din full nakhre allowed hain, birthday girl jo hai! 😂🎀
+          </p>
+          <p class="font-handwriting text-2xl text-gray-700 leading-relaxed">
+            With lots of wishes, care and dher saari friendship wali pyaari si feelings, 🫶🏻💖
+          </p>
+          
+
+          <div class="pt-4 text-right">
+            <p class="font-handwriting text-2xl text-[#b84a62]">Your friend, always cheering for you. 🌷✨</p>
+            <p class="font-serif font-bold text-gray-800">Your's Bunny</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. INTERACTIVE GIFTS MENU SECTION -->
+    <section class="text-center space-y-8">
+      <div class="inline-block border-b-2 border-pink-300 pb-1">
+        <h3 class="text-3xl font-serif text-[#5f433f]">Gifts Just For You!</h3>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <!-- Gift 1: Memories / Photo Album -->
+        <button onclick="openModal('memories-modal')" class="group bg-white p-6 rounded-2xl vintage-shadow hover:-translate-y-2 transition duration-300 border border-pink-100 flex flex-col items-center">
+          <div class="w-24 h-24 mb-4 flex items-center justify-center bg-pink-50 rounded-full group-hover:scale-110 transition">
+            📷
+          </div>
+          <span class="font-handwriting text-2xl text-gray-800">Little Gallery 🎀✨</span>
+          <span class="text-xs font-sans-clean text-pink-400 mt-1 uppercase tracking-wider">Click to view</span>
+        </button>
+
+        <!-- Gift 2: Interactive Cake -->
+        <button onclick="openModal('cake-modal')" class="group bg-white p-6 rounded-2xl vintage-shadow hover:-translate-y-2 transition duration-300 border border-pink-100 flex flex-col items-center">
+          <div class="w-24 h-24 mb-4 flex items-center justify-center bg-pink-50 rounded-full group-hover:scale-110 transition">
+            🎂
+          </div>
+          <span class="font-handwriting text-2xl text-gray-800">birthday cake</span>
+          <span class="text-xs font-sans-clean text-pink-400 mt-1 uppercase tracking-wider">Make a wish</span>
+        </button>
+
+        <!-- Gift 3: Flower Bouquet Surprise -->
+        <button onclick="openModal('flowers-modal')" class="group bg-white p-6 rounded-2xl vintage-shadow hover:-translate-y-2 transition duration-300 border border-pink-100 flex flex-col items-center">
+          <div class="w-24 h-24 mb-4 flex items-center justify-center bg-pink-50 rounded-full group-hover:scale-110 transition">
+            🌻
+          </div>
+          <span class="font-handwriting text-2xl text-gray-800">surprise bouquet</span>
+          <span class="text-xs font-sans-clean text-pink-400 mt-1 uppercase tracking-wider">Open petals</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. MESSAGE & VINYL RECORD PLAYER SECTION -->
+    <section class="bg-paper p-8 rounded-2xl vintage-shadow border border-[#f0e3db] flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 space-y-4">
+        <h4 class="text-2xl font-serif text-[#6c484f]">Our Soundtrack</h4>
+        <p class="font-handwriting text-2xl text-gray-600">
+          "If the world was ending, I'd wanna be next to you." Press the record to pause or resume our song.
+        </p>
+        <div class="pt-2">
+          <a href="https://open.spotify.com" target="_blank" class="inline-flex items-center gap-2 text-xs font-sans-clean font-semibold uppercase tracking-wider text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200 hover:bg-green-100 transition">
+            <span>Listen on Spotify</span> 🎵
+          </a>
+        </div>
+      </div>
+
+      <!-- Spinning Vinyl Disc Control -->
+      <div onclick="toggleMusic()" class="cursor-pointer relative group flex items-center justify-center">
+        <div id="vinyl-disc" class="w-36 h-36 rounded-full bg-neutral-900 border-4 border-neutral-800 flex items-center justify-center shadow-2xl transition animate-spin-slow">
+          <!-- Grooves -->
+          <div class="w-24 h-24 rounded-full border border-neutral-700 flex items-center justify-center">
+            <!-- Center Label -->
+            <div class="w-12 h-12 rounded-full bg-pink-400 border-2 border-white flex items-center justify-center">
+              <span id="music-indicator" class="text-xs text-white font-bold">PLAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. FOOTER SIGN-OFF -->
+    <footer class="text-center py-12 space-y-4">
+      <div class="font-handwriting text-4xl text-[#b84a62]">
+        some people make ordinary days unforgettable. ♡
+      </div>
+      <p class="text-xs font-sans-clean uppercase tracking-widest text-gray-400">
+        A LITTLE WEBSITE, A LOT OF MEMORIES — JUST FOR YOU, RANI 🎀
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- MODAL 1: MEMORIES PHOTO GRID -->
+  <div id="memories-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-paper max-w-2xl w-full p-6 rounded-2xl vintage-shadow max-h-[90vh] overflow-y-auto relative">
+      <button onclick="closeModal('memories-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black text-2xl font-bold">✕</button>
+      <h3 class="text-2xl font-serif text-center mb-6 text-[#6c484f]">My Favourite Girl's Little Gallery 🎀✨</h3>
+      
+        <div class="bg-white p-2 rounded shadow">
+          <img src="3rd.jpeg" class="h-36 w-full object-cover rounded" />
+          <p class="font-handwriting text-center mt-2 text-lg text-gray-600">Our Birthday Queen 👑🎀</p>
+        </div>
+        <div class="bg-white p-2 rounded shadow">
+          <img src="1st.jpeg" class="h-36 w-full object-cover rounded" />
+          <p class="font-handwriting text-center mt-2 text-lg text-gray-600">That Smile, That Vibe 🌷✨</p>
+        </div>
+        <div class="bg-white p-2 rounded shadow">
+          <img src="4th.jpeg" class="h-36 w-full object-cover rounded" />
+          <p class="font-handwriting text-center mt-2 text-lg text-gray-600">A Little Sunshine ☀️💗</p>
+        </div>
+        <div class="bg-white p-2 rounded shadow">
+          <img src="2nd.jpeg" class="h-36 w-full object-cover rounded" />
+          <p class="font-handwriting text-center mt-2 text-lg text-gray-600">A Little Sunshine ☀️💗</p>
+        </div>
+        <div class="bg-white p-2 rounded shadow">
+          <img src="5th.jpeg" class="h-36 w-full object-cover rounded" />
+          <p class="font-handwriting text-center mt-2 text-lg text-gray-600">A Little Sunshine ☀️💗</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: INTERACTIVE CAKE & CONFETTI -->
+  <div id="cake-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-paper max-w-md w-full p-8 rounded-2xl vintage-shadow text-center relative">
+      <button onclick="closeModal('cake-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black text-2xl font-bold">✕</button>
+      <h3 class="text-3xl font-serif text-[#6c484f] mb-2">Make a Wish! 🎂</h3>
+      <p class="font-handwriting text-xl text-gray-600 mb-6">Click the cake to blow out the candle</p>
+      
+      <div onclick="triggerCakeCelebration()" class="cursor-pointer text-8xl py-4 transform hover:scale-110 transition duration-300">
+        <span id="cake-emoji">🍰</span>
+      </div>
+
+      <div id="wish-revealed" class="hidden mt-4 space-y-2">
+        <p class="font-handwriting text-3xl text-pink-600 font-bold">✨ May all your dreams come true! ✨</p>
+        <p class="text-sm font-sans-clean text-gray-500">You deserve all the happiness in the universe.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: SUNFLOWER BOUQUET WITH LOVE NOTES -->
+  <div id="flowers-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-paper max-w-xl w-full p-8 rounded-2xl vintage-shadow relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('flowers-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-black text-2xl font-bold">✕</button>
+      <h3 class="text-3xl font-serif text-center text-[#6c484f] mb-6">Flowers Just For You 🌻</h3>
+      
+      <div class="relative bg-pink-50/50 p-6 rounded-xl border border-pink-100 text-center space-y-4">
+        <div class="text-7xl mb-2 animate-bounce">💐</div>
+        <div class="grid grid-cols-2 gap-3 text-left font-handwriting text-2xl text-gray-700">
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-pink-100">✨ you give me butterflies</div>
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-pink-100">✨ i love your laugh</div>
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-pink-100">✨ you're my best friend</div>
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-pink-100">✨ i love your smile</div>
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-pink-100 col-span-2 text-center text-[#b84a62] font-bold">
+            ♡ you are my everything ♡
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT INTERACTIONS ================= -->
+  <script>
+    const mailScreen = document.getElementById('mail-screen');
+    const mainContent = document.getElementById('main-content');
+    const bgAudio = document.getElementById('bg-audio');
+    const vinylDisc = document.getElementById('vinyl-disc');
+    const musicIndicator = document.getElementById('music-indicator');
+    let isPlaying = false;
+
+    // 1. Envelope opening transition
+    function openBirthdaySite() {
+      // Confetti burst on envelope click
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      // Smooth transition
+      mailScreen.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        mailScreen.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        setTimeout(() => {
+          mainContent.classList.remove('opacity-0');
+        }, 50);
+        // Start background ambient track
+        toggleMusic();
+      }, 700);
+    }
+
+    // 2. Music Player Control
+    function toggleMusic() {
+      if (isPlaying) {
+        bgAudio.pause();
+        vinylDisc.classList.remove('animate-spin-slow');
+        musicIndicator.textContent = 'PLAY';
+        isPlaying = false;
+      } else {
+        bgAudio.play().then(() => {
+          vinylDisc.classList.add('animate-spin-slow');
+          musicIndicator.textContent = 'PAUSE';
+          isPlaying = true;
+        }).catch(() => {
+          // Autoplay policy fallback
+          console.log("Audio waiting for user gesture.");
+        });
+      }
+    }
+
+    // 3. Modals Control
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // 4. Cake Celebration & Fireworks
+    function triggerCakeCelebration() {
+      document.getElementById('cake-emoji').textContent = '✨🎂✨';
+      document.getElementById('wish-revealed').classList.remove('hidden');
+      
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.5 },
+        colors: ['#f472b6', '#fb7185', '#fde047', '#a7f3d0']
+      });
+    }
+  </script>
+</body>
+</html>
